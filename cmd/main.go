@@ -9,28 +9,14 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/MoneyForest/timee-advent-calender-2024/internal"
-	"github.com/MoneyForest/timee-advent-calender-2024/internal/handler"
-	"github.com/MoneyForest/timee-advent-calender-2024/internal/infrastructure"
+	"main/internal"
+	"main/internal/handler"
+	"main/internal/infrastructure"
 )
 
-type TracerProviderWrapper interface {
-	Shutdown(context.Context) error
-}
-
-func initTracer(env string) (TracerProviderWrapper, error) {
-	switch env {
-	case "dev":
-		return infrastructure.InitDatadog()
-	default:
-		return infrastructure.InitJaeger()
-	}
-}
-
 func main() {
-	env := os.Getenv("ENV")
 	// Initialize tracer
-	tp, err := initTracer(env)
+	tp, err := infrastructure.InitTracer(os.Getenv("ENV"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,8 +32,10 @@ func main() {
 	b := make([]byte, 8)
 	rand.Read(b)
 	randomString := fmt.Sprintf("%x", b)
+	email := "john.doe+" + randomString + "@example.com"
 
-	if err := userHandler.CreateUser(ctx, "john.doe"+randomString+"@example.com"); err != nil {
+	if err := userHandler.CreateUser(ctx, email); err != nil {
 		log.Fatalf("failed to create user: %v", err)
 	}
+	log.Printf("success to create user: %v", email)
 }

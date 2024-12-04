@@ -26,7 +26,7 @@ func NewUserRepository(db *sql.DB, redis *redis.Client) *UserRepository {
 }
 
 func (r *UserRepository) CreateUser(ctx context.Context, email string) error {
-	tracer := otel.Tracer(os.Getenv("DD_SERVICE"))
+	tracer := otel.Tracer(os.Getenv("SERVICE"))
 	ctx, span := tracer.Start(ctx, "UserRepository.CreateUser")
 	defer span.End()
 

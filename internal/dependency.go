@@ -5,8 +5,9 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/MoneyForest/timee-advent-calender-2024/internal/repository"
-	"github.com/MoneyForest/timee-advent-calender-2024/internal/usecase"
+	"main/internal/repository"
+	"main/internal/usecase"
+
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 )

@@ -1,4 +1,4 @@
-module github.com/MoneyForest/timee-advent-calender-2024
+module main
 
 go 1.23.2
 

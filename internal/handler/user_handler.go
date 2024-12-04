@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/MoneyForest/timee-advent-calender-2024/internal/usecase"
+	"main/internal/usecase"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -19,7 +19,7 @@ func NewUserHandler(userUsecase *usecase.UserUsecase) *UserHandler {
 }
 
 func (h *UserHandler) CreateUser(ctx context.Context, email string) error {
-	tracer := otel.Tracer(os.Getenv("DD_SERVICE"))
+	tracer := otel.Tracer(os.Getenv("SERVICE"))
 	ctx, span := tracer.Start(ctx, "UserHandler.CreateUser")
 	defer span.End()
 
