@@ -1,0 +1,5 @@
+export ENV=dev
+export SERVICE=MoneyForest
+export VERSION=0.0.1
+
+export DD_API_KEY={your_datadog_api_key}

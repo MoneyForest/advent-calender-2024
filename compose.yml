@@ -1,0 +1,47 @@
+services:
+  mysql:
+    build:
+      context: ./docker/mysql
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+    user: 1000:1000
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: "redis:latest"
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass password
+    volumes:
+      - ./docker/redis/data:/data
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=datadoghq.com
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+    ports:
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # UI
+      - "14250:14250"
+      # - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
