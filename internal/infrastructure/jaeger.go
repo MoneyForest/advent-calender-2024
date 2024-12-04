@@ -30,7 +30,7 @@ func InitJaeger() (jaegerTracerProvider, error) {
 		sdktrace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
 			semconv.ServiceNameKey.String(os.Getenv("SERVICE")),
-			semconv.DeploymentEnvironmentKey.String("local"),
+			semconv.DeploymentEnvironmentKey.String(os.Getenv("ENV")),
 		)),
 	)
 	otel.SetTracerProvider(tp)

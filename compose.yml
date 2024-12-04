@@ -33,7 +33,7 @@ services:
       - DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT=0.0.0.0:4318
     ports:
       - "8126:8126"
-      - "4319:4318" # OTLP HTTP用のポートを追加
+      - "4319:4318" # OTLP HTTP用のポートを追加、ローカルマシンのポートはJaegarと被るのでずらしている
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc/:ro
