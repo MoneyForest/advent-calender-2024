@@ -9,7 +9,7 @@ type TracerProviderWrapper interface {
 func InitTracer(env string) (TracerProviderWrapper, error) {
 	switch env {
 	case "dev":
-		return InitDatadog()
+		return InitDatadog() // または InitDatadogWithDDOTel()
 	default:
 		return InitJaeger()
 	}
